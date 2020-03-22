@@ -1517,7 +1517,7 @@ class CocoapodsInstaller {
         core.info("debug");
         // Install new version of Cocoapods
         const versionArguments = (versionSpec === "latest") ? [] : ["-v", versionSpec];
-        await exec.exec("gem", ["install", "cocoapods", ...versionArguments, "-​-no-document"]);
+        await exec.exec("gem", ["install", "cocoapods", ...versionArguments, "--no-document"]);
         core.info(`Cocoapods ${versionSpec} has been installed successfully`);
     }
     static getVersionFromPodfile(podfilePath) {
