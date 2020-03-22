@@ -70,3 +70,6 @@ jobs:
       uses: ./
       with:
         version: latest
+
+    - name: Validate version
+      run: pod --version

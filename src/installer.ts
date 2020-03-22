@@ -7,18 +7,19 @@ import { ExecOptions } from "@actions/exec/lib/interfaces";
 
 export class CocoapodsInstaller {
     public static async install(versionSpec: string): Promise<void> {
+        // Checking pre-installed version of Cocoapods
         const installedVersion = await this.getInstalledVersion();
         if (installedVersion === versionSpec) {
             core.info(`Cocoapods ${versionSpec} has already installed. Not needed to re-install.`);
             return;
         }
 
-        await exec.exec("gem", ["uninstll", "cocoapods", "--all", "--executables"]);
+        // Remove pre-installed version of Cocoapods
+        exec.exec("gem", ["uninstall", "cocoapods", "--all", "--executables"]);
 
-        const installExitCode = await exec.exec("gem", ["install", "cocoapods", "-v", versionSpec]);
-        if (installExitCode !== 0) {
-            throw new Error(`Error during install Cocoapods ${versionSpec}`);
-        }
+        // Install new version of Cocoapods
+        const versionArguments = (versionSpec === "latest") ? [] : ["-v", versionSpec];
+        await exec.exec("gem", ["install", "cocoapods", ...versionArguments]);
 
         core.info(`Cocoapods ${versionSpec} has installed successfully`);
     }
