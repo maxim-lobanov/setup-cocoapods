@@ -1522,11 +1522,17 @@ class CocoapodsInstaller {
     static getVersionFromPodfile(podfilePath) {
         const absolutePath = path.resolve(podfilePath);
         if (!fs.existsSync(absolutePath)) {
-            throw new Error(`podfile is not found on path '${absolutePath}'`);
+            throw new Error(`Podfile is not found on path '${absolutePath}'`);
         }
         const fileContent = fs.readFileSync(absolutePath);
-        const fileLines = fileContent.toString().split(os_1.EOL);
-        return fileLines[0];
+        const podLines = fileContent.toString().split(os_1.EOL);
+        for (const podLine of podLines) {
+            const match = podLine.match(this.podVersionRegex);
+            if (match && match.length >= 2) {
+                return match[1].trim();
+            }
+        }
+        throw new Error(`Podfile '${absolutePath}' doesn't contain COCOAPODS version.`);
     }
     static async getInstalledVersion() {
         let stdOutput = "";
@@ -1545,6 +1551,7 @@ class CocoapodsInstaller {
     }
 }
 exports.CocoapodsInstaller = CocoapodsInstaller;
+CocoapodsInstaller.podVersionRegex = /^COCOAPODS: ([\d.]+)$/i;
 
 
 /***/ }),
@@ -1569,14 +1576,15 @@ const run = async () => {
         if (process.platform !== "darwin") {
             throw new Error(`This task is intended only for macOS platform. It can't be run on '${process.platform}' platform`);
         }
-        const versionInput = core.getInput("version", { required: false });
-        const podfilePathInput = core.getInput("podfile-path", { required: false });
-        if (!!versionInput === !!podfilePathInput) {
+        let versionSpec = core.getInput("version", { required: false });
+        const podfilePath = core.getInput("podfile-path", { required: false });
+        if (!!versionSpec === !!podfilePath) {
             throw new Error("Invalid input parameters usage. Only 'version' or 'podfile-path' should be defined");
         }
-        const versionSpec = versionInput; // || CocoapodsInstaller.getVersionFromPodfile(podfilePathInput);
         if (!versionSpec) {
-            throw new Error(`Invalid version format '${versionSpec}'`);
+            core.debug("Reading Podfile to determine the version of Cocoapods...");
+            versionSpec = installer_1.CocoapodsInstaller.getVersionFromPodfile(podfilePath);
+            core.info(`Podfile points to the Cocoapods ${versionSpec}`);
         }
         await installer_1.CocoapodsInstaller.install(versionSpec);
     }

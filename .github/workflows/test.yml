@@ -73,3 +73,34 @@ jobs:
 
     - name: Validate version
       run: pod --version
+
+  podfile:
+    name: install version from podfile.lock
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: setup-cocoapods
+      uses: ./
+      with:
+        podfile-path: __tests__/podfile-example/Podfile.lock
+
+    - name: Validate version
+      run: pod --version | grep "1.5.3"
+
+    - name: setup-cocoapods
+      uses: ./
+      with:
+        podfile-path: __tests__/podfile-example/Podfile2.lock
+
+    - name: Validate version
+      run: pod --version | grep "1.3.1"
+
+    - name: setup-cocoapods
+      uses: ./
+      with:
+        podfile-path: __tests__/podfile-example/Podfile3.lock
+
+    - name: Validate version
+      run: pod --version | grep "1.7.0"
