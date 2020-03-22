@@ -6,11 +6,11 @@ inputs:
     description: 'Version of Cocoapods to install'
     required: false
   podfile-path:
-    description: 'Path to Podfile.lock file to determine cocoapods version'
+    description: 'Path to Podfile.lock file to determine Cocoapods version'
     required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
 branding:
   icon: 'code'
-  color: 'yellow'
+  color: 'purple'

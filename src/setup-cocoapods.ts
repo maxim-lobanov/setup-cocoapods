@@ -11,7 +11,7 @@ const run = async (): Promise<void> => {
         const podfilePathInput = core.getInput("podfile-path", { required: false });
 
         if (!!versionInput === !!podfilePathInput) {
-            throw new Error("Invalid input parameters. Only 'version' or 'podfile-path' should be defined");
+            throw new Error("Invalid input parameters usage. Only 'version' or 'podfile-path' should be defined");
         }
 
         const versionSpec = versionInput;// || CocoapodsInstaller.getVersionFromPodfile(podfilePathInput);
