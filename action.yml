@@ -1,0 +1,16 @@
+name: 'Setup Cocoapods'
+author: 'Maxim Lobanov'
+description: 'Set up your GitHub Actions workflow with a specific version of Cocoapods'
+inputs:
+  version:
+    description: 'Version of Cocoapods to install'
+    required: false
+  podfile-path:
+    description: 'Path to Podfile.lock file to determine cocoapods version'
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'code'
+  color: 'yellow'
