@@ -6,7 +6,7 @@ on:
 
 jobs:
   version-with-preinstalled:
-    name: valid version - replace preinstalled
+    name: replace pre-installed version
     runs-on: macos-latest
     steps:
     - name: Checkout
@@ -18,10 +18,10 @@ jobs:
         version: 1.9.0
 
     - name: Validate version
-      run: pod --version | grep "1.9.1"
+      run: pod --version | grep "1.9.0"
 
   version-without-preinstalled:
-    name: valid version - without preinstalled
+    name: install on clean machine
     runs-on: macos-latest
     steps:
     - name: Checkout
@@ -39,7 +39,7 @@ jobs:
       run: pod --version | grep "1.5.3"
 
   version-already-installed:
-    name: valid version - already installed
+    name: already installed version
     runs-on: macos-latest
     steps:
     - name: Checkout
@@ -60,7 +60,7 @@ jobs:
       run: pod --version | grep "1.8.1"
 
   version-latest:
-    name: latest version
+    name: install latest version
     runs-on: macos-latest
     steps:
     - name: Checkout
