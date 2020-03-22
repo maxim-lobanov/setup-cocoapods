@@ -22,7 +22,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: setup-cocoapods
-      uses: maxim-lobanov/setup-cocoapods
+      uses: maxim-lobanov/setup-cocoapods@v1.0
       with:
         version: 1.9.0
 
@@ -31,7 +31,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: setup-cocoapods
-      uses: maxim-lobanov/setup-cocoapods
+      uses: maxim-lobanov/setup-cocoapods@v1.0
       with:
         podfile-path: myApp/Podfile.lock
 ```
