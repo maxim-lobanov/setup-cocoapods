@@ -10,7 +10,7 @@ Action supports two ways to specify Cocoapods version:
 | version       | Specify version of Cocoapods to install | `latest`, `1.5.2`, `1.9.1` |
 | podfile-path  | Specify path to `Podfile.lock` file to determine Cocoapods version dynamically | `myApp/Podfile.lock` |
 
-Only one parameter `version` or `podfile-path` should be specified at the same time.
+At the same time, only one parameter should be specified.
 
 # Usage
 ```

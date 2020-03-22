@@ -35,7 +35,7 @@ describe("CocoapodsInstaller", () => {
         it.each([
             ["Podfile.lock", "1.5.3"],
             ["Podfile2.lock", "1.3.1"],
-            ["Podfile3.lock", "1.7.0"],
+            ["Podfile3.lock", "1.9.1"],
             ["Podfile4.lock", null]
         ])("test case %#", (input: string, expected: string | null) => {
             const testCasePath = path.resolve(path.join(__dirname, "podfile-example", input));
