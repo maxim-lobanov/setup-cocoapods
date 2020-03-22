@@ -6,6 +6,7 @@ import * as core from "@actions/core";
 import { ExecOptions } from "@actions/exec/lib/interfaces";
 
 export class CocoapodsInstaller {
+    private static podVersionRegex = /^COCOAPODS: ([\d.]+)$/i;
     public static async install(versionSpec: string): Promise<void> {
         // Checking pre-installed version of Cocoapods
         const installedVersion = await this.getInstalledVersion();
@@ -28,12 +29,20 @@ export class CocoapodsInstaller {
         const absolutePath = path.resolve(podfilePath);
 
         if (!fs.existsSync(absolutePath)) {
-            throw new Error(`podfile is not found on path '${absolutePath}'`);
+            throw new Error(`Podfile is not found on path '${absolutePath}'`);
         }
 
         const fileContent = fs.readFileSync(absolutePath);
-        const fileLines = fileContent.toString().split(EOL);
-        return fileLines[0];
+        const podLines = fileContent.toString().split(EOL);
+        
+        for (const podLine of podLines) {
+            const match = podLine.match(this.podVersionRegex);
+            if (match && match.length >= 2) {
+                return match[1].trim();
+            }
+        }
+
+        throw new Error(`Podfile '${absolutePath}' doesn't contain COCOAPODS version.`);
     }
 
     private static async getInstalledVersion(): Promise<string | null> {

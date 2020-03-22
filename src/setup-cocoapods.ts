@@ -7,16 +7,17 @@ const run = async (): Promise<void> => {
             throw new Error(`This task is intended only for macOS platform. It can't be run on '${process.platform}' platform`);
         }
 
-        const versionInput = core.getInput("version", { required: false });
-        const podfilePathInput = core.getInput("podfile-path", { required: false });
+        let versionSpec = core.getInput("version", { required: false });
+        const podfilePath = core.getInput("podfile-path", { required: false });
 
-        if (!!versionInput === !!podfilePathInput) {
+        if (!!versionSpec === !!podfilePath) {
             throw new Error("Invalid input parameters usage. Only 'version' or 'podfile-path' should be defined");
         }
 
-        const versionSpec = versionInput;// || CocoapodsInstaller.getVersionFromPodfile(podfilePathInput);
         if (!versionSpec) {
-            throw new Error(`Invalid version format '${versionSpec}'`);
+            core.debug("Reading Podfile to determine the version of Cocoapods...");
+            versionSpec = CocoapodsInstaller.getVersionFromPodfile(podfilePath);
+            core.info(`Podfile points to the Cocoapods ${versionSpec}`);
         }
 
         await CocoapodsInstaller.install(versionSpec);
