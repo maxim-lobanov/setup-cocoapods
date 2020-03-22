@@ -1511,10 +1511,7 @@ class CocoapodsInstaller {
             core.info(`Cocoapods ${versionSpec} has already installed. Not needed to re-install.`);
             return;
         }
-        const uninstallExitCode = await exec.exec("gem", ["uninstall", "cocoapods", "--all", "--executables"]).catch(error => error);
-        if (uninstallExitCode !== 0) {
-            core.info("Error during deleting existing version of cocoapods");
-        }
+        await exec.exec("gem", ["uninstll", "cocoapods", "--all", "--executables"]);
         const installExitCode = await exec.exec("gem", ["install", "cocoapods", "-v", versionSpec]);
         if (installExitCode !== 0) {
             throw new Error(`Error during install Cocoapods ${versionSpec}`);
