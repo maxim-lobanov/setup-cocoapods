@@ -14,7 +14,7 @@ const run = async (): Promise<void> => {
             throw new Error("Invalid input parameters. Only 'version' or 'podfile-path' should be defined");
         }
 
-        const versionSpec = versionInput || CocoapodsInstaller.getVersionFromPodfile(podfilePathInput);
+        const versionSpec = versionInput;// || CocoapodsInstaller.getVersionFromPodfile(podfilePathInput);
         if (!versionSpec) {
             throw new Error(`Invalid version format '${versionSpec}'`);
         }

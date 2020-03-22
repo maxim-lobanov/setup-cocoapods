@@ -1506,16 +1506,17 @@ const exec = __importStar(__webpack_require__(986));
 const core = __importStar(__webpack_require__(470));
 class CocoapodsInstaller {
     static async install(versionSpec) {
+        // Checking pre-installed version of Cocoapods
         const installedVersion = await this.getInstalledVersion();
         if (installedVersion === versionSpec) {
             core.info(`Cocoapods ${versionSpec} has already installed. Not needed to re-install.`);
             return;
         }
-        await exec.exec("gem", ["uninstll", "cocoapods", "--all", "--executables"]);
-        const installExitCode = await exec.exec("gem", ["install", "cocoapods", "-v", versionSpec]);
-        if (installExitCode !== 0) {
-            throw new Error(`Error during install Cocoapods ${versionSpec}`);
-        }
+        // Remove pre-installed version of Cocoapods
+        exec.exec("gem", ["uninstall", "cocoapods", "--all", "--executables"]);
+        // Install new version of Cocoapods
+        const versionArguments = (versionSpec === "latest") ? [] : ["-v", versionSpec];
+        await exec.exec("gem", ["install", "cocoapods", ...versionArguments]);
         core.info(`Cocoapods ${versionSpec} has installed successfully`);
     }
     static getVersionFromPodfile(podfilePath) {
@@ -1573,7 +1574,7 @@ const run = async () => {
         if (!!versionInput === !!podfilePathInput) {
             throw new Error("Invalid input parameters. Only 'version' or 'podfile-path' should be defined");
         }
-        const versionSpec = versionInput || installer_1.CocoapodsInstaller.getVersionFromPodfile(podfilePathInput);
+        const versionSpec = versionInput; // || CocoapodsInstaller.getVersionFromPodfile(podfilePathInput);
         if (!versionSpec) {
             throw new Error(`Invalid version format '${versionSpec}'`);
         }
