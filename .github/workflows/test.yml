@@ -103,4 +103,4 @@ jobs:
         podfile-path: __tests__/podfile-example/Podfile3.lock
 
     - name: Validate version
-      run: pod --version | grep "1.7.0"
+      run: pod --version | grep "1.9.1"
