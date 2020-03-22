@@ -1,0 +1,51 @@
+name: Validate 'setup-cocoapods'
+on:
+  pull_request:
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+  version-with-preinstalled:
+    name: valid version - replace preinstalled
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: setup-cocoapods
+      uses: ./
+      with:
+        version: 1.9.0
+
+    - name: Validate version
+      run: pod --version | grep "1.9.0"
+
+  version-without-preinstalled:
+    name: valid version - without preinstalled
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Remove pre-installed version
+      run: gem uninstall cocoapods --all --executables
+
+    - name: setup-cocoapods
+      uses: ./
+      with:
+        version: 1.5.3
+
+    - name: Validate version
+      run: pod --version | grep "1.5.3"
+
+  version-latest:
+    name: latest version
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: setup-cocoapods
+      uses: ./
+      with:
+        version: latest
