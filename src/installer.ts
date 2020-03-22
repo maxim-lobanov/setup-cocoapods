@@ -18,9 +18,10 @@ export class CocoapodsInstaller {
         // Remove pre-installed version of Cocoapods
         exec.exec("gem", ["uninstall", "cocoapods", "--all", "--executables"]);
 
+        core.info("debug");
         // Install new version of Cocoapods
-        // const versionArguments = (versionSpec === "latest") ? [] : ["-v", versionSpec];
-        // await exec.exec("gem", ["install", "cocoapods", ...versionArguments]);
+        const versionArguments = (versionSpec === "latest") ? [] : ["-v", versionSpec];
+        await exec.exec("gem", ["install", "cocoapods", ...versionArguments, "--no-document"]);
 
         core.info(`Cocoapods ${versionSpec} has been installed successfully`);
     }

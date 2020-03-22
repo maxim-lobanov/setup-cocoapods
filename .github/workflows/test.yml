@@ -49,15 +49,15 @@ jobs:
       run: gem uninstall cocoapods --all --executables
 
     - name: Install needed version
-      run: gem install cocoapods -v 1.8.1
+      run: gem install cocoapods -v 1.9.1
 
     - name: setup-cocoapods
       uses: ./
       with:
-        version: 1.8.1
+        version: 1.9.1
 
     - name: Validate version
-      run: pod --version | grep "1.8.1"
+      run: pod --version | grep "1.9.1"
 
   version-latest:
     name: install latest version
