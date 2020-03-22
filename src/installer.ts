@@ -1,7 +1,7 @@
 import * as fs from "fs";
-import * as path from 'path';
+import * as path from "path";
 import { EOL } from "os";
-import * as exec from '@actions/exec';
+import * as exec from "@actions/exec";
 import * as core from "@actions/core";
 import { ExecOptions } from "@actions/exec/lib/interfaces";
 
@@ -13,7 +13,7 @@ export class CocoapodsInstaller {
             return;
         }
 
-        const uninstallExitCode = await exec.exec("gem", ["uninstall", "cocoapods", "--all", "--executables"]);
+        const uninstallExitCode = await exec.exec("gem", ["uninstall", "cocoapods", "--all", "--executables"]).catch(error => error);
         if (uninstallExitCode !== 0) {
             core.info("Error during deleting existing version of cocoapods");
         }
@@ -30,7 +30,7 @@ export class CocoapodsInstaller {
         const absolutePath = path.resolve(podfilePath);
 
         if (!fs.existsSync(absolutePath)) {
-            throw new Error(`podfile is not found on path '${absolutePath}'`)
+            throw new Error(`podfile is not found on path '${absolutePath}'`);
         }
 
         const fileContent = fs.readFileSync(absolutePath);
@@ -42,13 +42,13 @@ export class CocoapodsInstaller {
         let stdOutput = "";
         const options: ExecOptions = {
             listeners: {
-                stdout: (data: Buffer) => {
+                stdout: (data: Buffer): void => {
                     stdOutput += data.toString();
                 }
             }
         };
 
-        const exitCode = await exec.exec("pod", ["--version"], options);
+        const exitCode = await exec.exec("pod", ["--version"], options).catch(error => error);
         if (exitCode === 0 && stdOutput) {
             return stdOutput.trim();
         }
