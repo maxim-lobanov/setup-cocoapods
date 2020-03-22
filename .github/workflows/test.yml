@@ -18,7 +18,7 @@ jobs:
         version: 1.9.0
 
     - name: Validate version
-      run: pod --version | grep "1.9.0"
+      run: pod --version | grep "1.9.1"
 
   version-without-preinstalled:
     name: valid version - without preinstalled
