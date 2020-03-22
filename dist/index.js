@@ -1509,7 +1509,7 @@ class CocoapodsInstaller {
         // Checking pre-installed version of Cocoapods
         const installedVersion = await this.getInstalledVersion();
         if (installedVersion === versionSpec) {
-            core.info(`Cocoapods ${versionSpec} has already installed. Not needed to re-install.`);
+            core.info(`Cocoapods ${versionSpec} has already been installed. No need to re-install.`);
             return;
         }
         // Remove pre-installed version of Cocoapods
@@ -1517,7 +1517,7 @@ class CocoapodsInstaller {
         // Install new version of Cocoapods
         const versionArguments = (versionSpec === "latest") ? [] : ["-v", versionSpec];
         await exec.exec("gem", ["install", "cocoapods", ...versionArguments]);
-        core.info(`Cocoapods ${versionSpec} has installed successfully`);
+        core.info(`Cocoapods ${versionSpec} has been installed successfully`);
     }
     static getVersionFromPodfile(podfilePath) {
         const absolutePath = path.resolve(podfilePath);
@@ -1572,7 +1572,7 @@ const run = async () => {
         const versionInput = core.getInput("version", { required: false });
         const podfilePathInput = core.getInput("podfile-path", { required: false });
         if (!!versionInput === !!podfilePathInput) {
-            throw new Error("Invalid input parameters. Only 'version' or 'podfile-path' should be defined");
+            throw new Error("Invalid input parameters usage. Only 'version' or 'podfile-path' should be defined");
         }
         const versionSpec = versionInput; // || CocoapodsInstaller.getVersionFromPodfile(podfilePathInput);
         if (!versionSpec) {

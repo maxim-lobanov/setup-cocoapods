@@ -10,7 +10,7 @@ export class CocoapodsInstaller {
         // Checking pre-installed version of Cocoapods
         const installedVersion = await this.getInstalledVersion();
         if (installedVersion === versionSpec) {
-            core.info(`Cocoapods ${versionSpec} has already installed. Not needed to re-install.`);
+            core.info(`Cocoapods ${versionSpec} has already been installed. No need to re-install.`);
             return;
         }
 
@@ -21,7 +21,7 @@ export class CocoapodsInstaller {
         const versionArguments = (versionSpec === "latest") ? [] : ["-v", versionSpec];
         await exec.exec("gem", ["install", "cocoapods", ...versionArguments]);
 
-        core.info(`Cocoapods ${versionSpec} has installed successfully`);
+        core.info(`Cocoapods ${versionSpec} has been installed successfully`);
     }
 
     public static getVersionFromPodfile(podfilePath: string): string {
