@@ -1,5 +1,8 @@
 name: Validate 'setup-cocoapods'
 on:
+  push:
+    branches:
+      - master
   pull_request:
   schedule:
     - cron: 0 0 * * *
@@ -120,7 +123,7 @@ jobs:
     - name: setup-cocoapods
       uses: ./
       with:
-        version: latest
+        version: 1.8.4
 
     - name: Validate version
-      run: pod --version
+      run: pod --version | grep "1.8.4"

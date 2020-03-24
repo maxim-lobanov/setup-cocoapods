@@ -4,6 +4,8 @@ Action supports two ways to specify Cocoapods version:
 - Specify particular version using `version` parameter
 - Specify path to the `Podfile.lock` file using `podfile-path` parameter. In this case, version of Cocoapods [will be parsed from Podfile.lock](https://github.com/maxim-lobanov/setup-cocoapods/blob/master/__tests__/podfile-example/Podfile.lock#L16).
 
+Action is intended for macOS and Ubuntu platforms.
+
 # Available parameters
 | Parameter name     | Description                             | Supported format           |
 |---------------|-----------------------------------------|----------------------------|
@@ -22,7 +24,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: setup-cocoapods
-      uses: maxim-lobanov/setup-cocoapods@v1.0
+      uses: maxim-lobanov/setup-cocoapods@v1.1
       with:
         version: 1.9.0
 
@@ -31,10 +33,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: setup-cocoapods
-      uses: maxim-lobanov/setup-cocoapods@v1.0
+      uses: maxim-lobanov/setup-cocoapods@v1.1
       with:
         podfile-path: myApp/Podfile.lock
 ```
 
 # License
-The scripts and documentation in this project are released under the [MIT License](LICENSE)
+The scripts and documentation in this project are released under the [MIT License](LICENSE).
