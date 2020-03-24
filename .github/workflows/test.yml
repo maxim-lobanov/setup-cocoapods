@@ -104,3 +104,23 @@ jobs:
 
     - name: Validate version
       run: pod --version | grep "1.9.1"
+
+  ubuntu-install:
+    name: install latest on ubuntu
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: setup-ruby
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: '2.6'
+
+    - name: setup-cocoapods
+      uses: ./
+      with:
+        version: latest
+
+    - name: Validate version
+      run: pod --version
