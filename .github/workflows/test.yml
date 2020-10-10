@@ -101,7 +101,7 @@ jobs:
       run: pod --version | grep "1.9.3"
 
   podfile-preview:
-    name: install stable version from podfile.lock
+    name: install preview version from podfile.lock
     runs-on: macos-latest
     steps:
     - name: Checkout
