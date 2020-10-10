@@ -1029,6 +1029,62 @@ module.exports = require("child_process");
 
 /***/ }),
 
+/***/ 335:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getVersionFromPodfile = exports.getVersionFromPodfileLine = void 0;
+const fs = __importStar(__webpack_require__(747));
+const path = __importStar(__webpack_require__(622));
+const os_1 = __webpack_require__(87);
+const podVersionRegex = /^COCOAPODS: ([\d.]+(beta|rc)?\.?\d*)$/i;
+exports.getVersionFromPodfileLine = (line) => {
+    const match = line.match(podVersionRegex);
+    if (match && match.length >= 2) {
+        return match[1].trim();
+    }
+    return null;
+};
+exports.getVersionFromPodfile = (podfilePath) => {
+    const absolutePath = path.resolve(podfilePath);
+    if (!fs.existsSync(absolutePath)) {
+        throw new Error(`Podfile is not found on path '${absolutePath}'`);
+    }
+    const fileContent = fs.readFileSync(absolutePath);
+    const podLines = fileContent.toString().split(os_1.EOL);
+    for (const podLine of podLines) {
+        const matchedVersion = exports.getVersionFromPodfileLine(podLine);
+        if (matchedVersion) {
+            return matchedVersion;
+        }
+    }
+    throw new Error(`Podfile '${absolutePath}' doesn't contain COCOAPODS version.`);
+};
+
+
+/***/ }),
+
 /***/ 357:
 /***/ (function(module) {
 
@@ -1623,9 +1679,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CocoapodsInstaller = void 0;
-const fs = __importStar(__webpack_require__(747));
-const path = __importStar(__webpack_require__(622));
-const os_1 = __webpack_require__(87);
 const exec = __importStar(__webpack_require__(986));
 const core = __importStar(__webpack_require__(470));
 class CocoapodsInstaller {
@@ -1642,21 +1695,6 @@ class CocoapodsInstaller {
         const versionArguments = (versionSpec === "latest") ? [] : ["-v", versionSpec];
         await exec.exec("gem", ["install", "cocoapods", ...versionArguments, "--no-document"]);
         core.info(`Cocoapods ${versionSpec} has been installed successfully`);
-    }
-    static getVersionFromPodfile(podfilePath) {
-        const absolutePath = path.resolve(podfilePath);
-        if (!fs.existsSync(absolutePath)) {
-            throw new Error(`Podfile is not found on path '${absolutePath}'`);
-        }
-        const fileContent = fs.readFileSync(absolutePath);
-        const podLines = fileContent.toString().split(os_1.EOL);
-        for (const podLine of podLines) {
-            const match = podLine.match(this.podVersionRegex);
-            if (match && match.length >= 2) {
-                return match[1].trim();
-            }
-        }
-        throw new Error(`Podfile '${absolutePath}' doesn't contain COCOAPODS version.`);
     }
     static async getInstalledVersion() {
         let stdOutput = "";
@@ -1675,7 +1713,6 @@ class CocoapodsInstaller {
     }
 }
 exports.CocoapodsInstaller = CocoapodsInstaller;
-CocoapodsInstaller.podVersionRegex = /^COCOAPODS: ([\d.]+)$/i;
 
 
 /***/ }),
@@ -1707,6 +1744,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const installer_1 = __webpack_require__(749);
+const podfile_parser_1 = __webpack_require__(335);
 const run = async () => {
     try {
         if (process.platform !== "darwin" && process.platform !== "linux") {
@@ -1715,11 +1753,11 @@ const run = async () => {
         let versionSpec = core.getInput("version", { required: false });
         const podfilePath = core.getInput("podfile-path", { required: false });
         if (!!versionSpec === !!podfilePath) {
-            throw new Error("Invalid input parameters usage. Only 'version' or 'podfile-path' should be defined");
+            throw new Error("Invalid input parameters usage. Either 'version' or 'podfile-path' should be specified. Not the both ones.");
         }
         if (!versionSpec) {
             core.debug("Reading Podfile to determine the version of Cocoapods...");
-            versionSpec = installer_1.CocoapodsInstaller.getVersionFromPodfile(podfilePath);
+            versionSpec = podfile_parser_1.getVersionFromPodfile(podfilePath);
             core.info(`Podfile points to the Cocoapods ${versionSpec}`);
         }
         await installer_1.CocoapodsInstaller.install(versionSpec);

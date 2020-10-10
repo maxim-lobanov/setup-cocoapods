@@ -1,4 +1,3 @@
-import * as path from "path";
 import * as exec from "@actions/exec";
 import { CocoapodsInstaller } from "../src/installer";
 
@@ -28,22 +27,6 @@ describe("CocoapodsInstaller", () => {
             CocoapodsInstaller["getInstalledVersion"] = jest.fn().mockReturnValue("1.9.1");
             await CocoapodsInstaller.install("1.9.1");
             expect(execCommandSpy).toHaveBeenCalledTimes(0);
-        });
-    });
-
-    describe("getVersionFromPodfile", () => {
-        it.each([
-            ["Podfile.lock", "1.5.3"],
-            ["Podfile2.lock", "1.3.1"],
-            ["Podfile3.lock", "1.9.1"],
-            ["Podfile4.lock", null]
-        ])("test case %#", (input: string, expected: string | null) => {
-            const testCasePath = path.resolve(path.join(__dirname, "podfile-example", input));
-            if (expected) {
-                expect(CocoapodsInstaller.getVersionFromPodfile(testCasePath)).toBe(expected);
-            } else {
-                expect(() => CocoapodsInstaller.getVersionFromPodfile(testCasePath)).toThrow();
-            }
         });
     });
 });
