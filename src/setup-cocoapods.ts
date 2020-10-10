@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import { CocoapodsInstaller } from "./installer";
+import { getVersionFromPodfile } from "./podfile-parser";
 
 const run = async (): Promise<void> => {
     try {
@@ -11,12 +12,12 @@ const run = async (): Promise<void> => {
         const podfilePath = core.getInput("podfile-path", { required: false });
 
         if (!!versionSpec === !!podfilePath) {
-            throw new Error("Invalid input parameters usage. Only 'version' or 'podfile-path' should be defined");
+            throw new Error("Invalid input parameters usage. Either 'version' or 'podfile-path' should be specified. Not the both ones.");
         }
 
         if (!versionSpec) {
             core.debug("Reading Podfile to determine the version of Cocoapods...");
-            versionSpec = CocoapodsInstaller.getVersionFromPodfile(podfilePath);
+            versionSpec = getVersionFromPodfile(podfilePath);
             core.info(`Podfile points to the Cocoapods ${versionSpec}`);
         }
 
