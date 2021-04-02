@@ -19,10 +19,10 @@ jobs:
     - name: setup-cocoapods
       uses: ./
       with:
-        version: 1.9.0
+        version: 1.10.0
 
     - name: Validate version
-      run: pod --version | grep "1.9.0"
+      run: pod --version | grep "1.10.0"
 
   install-on-clean-machine:
     name: install on clean machine
