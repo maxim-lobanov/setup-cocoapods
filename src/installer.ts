@@ -12,7 +12,7 @@ export class CocoapodsInstaller {
         }
 
         // Remove pre-installed version of Cocoapods
-        exec.exec("gem", ["uninstall", "cocoapods", "--all", "--executables"]);
+        exec.exec("gem", ["uninstall", "cocoapods", "--all", "--executables", "--ignore-dependencies"]);
 
         // Install new version of Cocoapods
         const versionArguments = (versionSpec === "latest") ? [] : ["-v", versionSpec];
