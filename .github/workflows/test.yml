@@ -32,7 +32,7 @@ jobs:
       uses: actions/checkout@v2
     
     - name: Remove pre-installed version
-      run: gem uninstall cocoapods --all --executables
+      run: gem uninstall cocoapods --all --executables --ignore-dependencies
 
     - name: setup-cocoapods
       uses: ./
@@ -50,7 +50,7 @@ jobs:
       uses: actions/checkout@v2
     
     - name: Remove pre-installed version
-      run: gem uninstall cocoapods --all --executables
+      run: gem uninstall cocoapods --all --executables --ignore-dependencies
 
     - name: Install needed version
       run: gem install cocoapods -v 1.9.1

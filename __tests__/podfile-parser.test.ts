@@ -6,15 +6,15 @@ describe("getVersionFromPodfile", () => {
         ["Podfile.lock", "1.5.3"],
         ["Podfile2.lock", "1.9.3"],
         ["Podfile3.lock", "1.10.0.rc.1"],
-        ["Podfile4.lock", "1.9.0.beta.2"],
-        ["Podfile5.lock", null]
+        ["Podfile4.lock", "1.9.0.beta.2"]
     ])("test case %#", (input: string, expected: string | null) => {
         const testCasePath = path.resolve(path.join(__dirname, "podfile-example", input));
-        if (expected) {
-            expect(getVersionFromPodfile(testCasePath)).toBe(expected);
-        } else {
-            expect(() => getVersionFromPodfile(testCasePath)).toThrow();
-        }
+        expect(getVersionFromPodfile(testCasePath)).toBe(expected);
+    });
+
+    it("fails on invalid podfile", () => {
+        const testCasePath = path.resolve(path.join(__dirname, "podfile-example", "Podfile5.lock"));
+        expect(() => getVersionFromPodfile(testCasePath)).toThrow();
     });
 });
 

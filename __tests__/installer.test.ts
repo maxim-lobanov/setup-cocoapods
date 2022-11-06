@@ -19,7 +19,7 @@ describe("CocoapodsInstaller", () => {
         it("replace existing version", async () => {
             CocoapodsInstaller["getInstalledVersion"] = jest.fn().mockReturnValue("1.8.5");
             await CocoapodsInstaller.install("1.9.1");
-            expect(execCommandSpy).toHaveBeenCalledWith("gem", ["uninstall", "cocoapods", expect.any(String), expect.any(String)]);
+            expect(execCommandSpy).toHaveBeenCalledWith("gem", ["uninstall", "cocoapods", expect.any(String), expect.any(String), expect.any(String)]);
             expect(execCommandSpy).toHaveBeenCalledWith("gem", ["install", "cocoapods", expect.any(String), expect.any(String), expect.any(String)]);
         });
 
