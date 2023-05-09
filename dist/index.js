@@ -42,7 +42,7 @@ class CocoapodsInstaller {
             return;
         }
         // Remove pre-installed version of Cocoapods
-        exec.exec("gem", ["uninstall", "cocoapods", "--all", "--executables", "--ignore-dependencies"]);
+        await exec.exec("gem", ["uninstall", "cocoapods", "--all", "--executables", "--ignore-dependencies"]);
         // Install new version of Cocoapods
         const versionArguments = (versionSpec === "latest") ? [] : ["-v", versionSpec];
         await exec.exec("gem", ["install", "cocoapods", ...versionArguments, "--no-document"]);
