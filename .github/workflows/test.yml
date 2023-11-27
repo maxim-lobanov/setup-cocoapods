@@ -1,4 +1,4 @@
-git commit --allow-empty -m "Empty-Commit"name: Validate 'setup-cocoapods'
+name: Validate 'setup-cocoapods'
 on:
   push:
     branches:
