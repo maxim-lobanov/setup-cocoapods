@@ -9,7 +9,7 @@ inputs:
     description: 'Path to Podfile.lock file to determine Cocoapods version'
     required: false
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
 branding:
   icon: 'code'
