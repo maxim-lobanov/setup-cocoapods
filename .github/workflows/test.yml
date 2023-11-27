@@ -1,4 +1,4 @@
-name: Validate 'setup-cocoapods'
+git commit --allow-empty -m "Empty-Commit"name: Validate 'setup-cocoapods'
 on:
   push:
     branches:
@@ -132,7 +132,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: setup-ruby
-      uses: actions/setup-ruby@v1
+      uses: ruby/setup-ruby@v1
       with:
         ruby-version: '2.6'
 
